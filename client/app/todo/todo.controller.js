@@ -5,9 +5,9 @@
         .module('app')
         .controller('TodoController', TodoController)
 
-    TodoController.$inject = ['$http'];
+    TodoController.$inject = ['TodoFactory'];
 
-    function TodoController($http) {
+    function TodoController(TodoFactory) {
         var vm = this;
 
         vm.newTodo = {};
@@ -19,30 +19,29 @@
         //////////
 
         function activate() {
-            $http
-                .get('http://localhost:3000/todos')
-                .then(res => {
-                    vm.todos = res.data;
+            TodoFactory
+                .getTodo()
+                .then(function (data) {
+                    vm.todos = data;
                 });
-
         }
 
         function addTodo() {
-            const newTodo = {
-                todos: vm.newTodo
-            };
-            $http
-                .post('http://localhost:3000/todos', newTodo)
-                .then(res => {
-                    alert('You added some stuff');
-                    vm.todos.push(newTodo);
+            TodoFactory
+                .postTodo(vm.newTodo)
+                .then(() => {
+                        vm.todos.push(vm.newTodo);
+                        vm.newTodo = {};
                 });
-                
         }
 
         function removeTodo(todo) {
-            var index = vm.todos.indexOf(todo);
-            vm.todos.splice(index, 1);
+            TodoFactory
+                .deleteTodo(todo._id)
+                .then(() => {
+                    var index = vm.todos.indexOf(todo);
+                    vm.todos.splice(index, 1);
+                });
         }
     }
 })();

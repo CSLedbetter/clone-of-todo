@@ -1,4 +1,4 @@
-(function(){
+(function () {
     'use strict';
 
     angular
@@ -10,20 +10,31 @@
     function TodoFactory($http) {
         var service = {
             getTodo: getTodo,
-            postTodo: postTodo
+            postTodo: postTodo,
+            deleteTodo: deleteTodo
         };
 
         return service;
 
-        function getTodo() { 
+        function getTodo() {
             return $http
-                .get('/todo')
-                .then((res) => res.data);
+                .get('/todos')
+                .then(function (res) {
+                    return res.data;
+                });
 
         };
-        
-        function postTodo() { 
 
+        function postTodo(todo) {
+            return $http
+                .post('/todos', todo)
+                .then(res => res.data);
+        };
+
+        function deleteTodo(id) {
+            return $http
+                .delete('/todos/' + id)
+                .then(res => res.data)
         };
     }
 })();

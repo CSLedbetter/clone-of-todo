@@ -33,13 +33,12 @@
             </select>
             </div>
             <button type="submit" class="btn btn-primary">Add</button>
-
         </form>
 
         <section>
             <ul>
-                <li ng-repeat="todo in todoCtrl.todos">
-                    {{todo.todos.text}}
+                <li ng-repeat="todo in todoCtrl.todos | orderBy:'-priority'">
+                    {{todo.text}}
                     <button class="btn btn-xs btn-danger pull-right" ng-click="todoCtrl.removeTodo(todo)">(Remove)</button>
                 </li>
             </ul>
@@ -49,6 +48,7 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="app/app.module.js"></script>
     <script src="app/todo/todo.controller.js"></script>
+    <script src="app/core/todo.factory.js"></script>
 </body>
 
 </html>
